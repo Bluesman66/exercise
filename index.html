@@ -11,7 +11,21 @@
 
 <body>
     <div id="output">Hello World</div>
-    <script></script>
+    <script>
+        var counter = 0;
+        var el = document.getElementById('output');
+        el.style.position = 'absolute';
+        el.addEventListener('click', moveEle);
+
+        function moveEle() {
+            console.log(counter)
+            counter++;
+            el.style.left = (counter * 3) + 'px';
+            if (counter < 100) {
+                window.requestAnimationFrame(moveEle);
+            }
+        }
+    </script>
 </body>
 
 </html>
