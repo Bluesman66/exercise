@@ -104,12 +104,23 @@
             basket.el.style.left = basket.x + 'px';
             basket.el.style.bottom = basket.y + 'px';
 
+            var second = document.querySelector('.baddy');
+            var test = colDetection(basket.el, second)
+            console.log(test);
+
             requestAnimationFrame(playGame);
         }
 
+        function colDetection(first, second) {
+            var a = first.getBoundingClientRect();
+            var b = second.getBoundingClientRect();
+            return !(
+                ((a.top + a.height) < (b.top)) || (a.top > (b.top + b.height)) || ((a.left + a.width) < b.left) ||
+                (a.left > (b.left + b.width)));
+        }
+
         function pressKeyOn(event) {
-            event.preventDefault();
-            console.log(event);
+            event.preventDefault();            
             keys[event.key] = true;
         }
 
