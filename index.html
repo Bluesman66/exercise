@@ -47,7 +47,7 @@
 </head>
 
 <body>
-    <div>Score: <span class="score">0</span></div>
+    <div>Score: <span class="score">0</span> <span class="message"></span></div>
     <div id="container">
         <div id="basketContainer" class="basket">
             <div class="basket1"></div>
@@ -60,6 +60,9 @@
         var start = window.mozAnimationStartTime; // Only supported in FF. Other browsers can use something like Date.now().
         var container = document.getElementById('container');
         var basketContainer = document.getElementById('basketContainer');
+        var score = 0;
+        var totalBad = 10;
+        var gameplay = true;
 
         var keys = {
             ArrowUp: false,
@@ -112,6 +115,10 @@
         }
 
         function makeBad(e) {
+            if (totalBad < 1) {
+                gameplay = false;
+            }
+            totalBad--;
             var randomWidth = Math.floor(Math.random() * 50) + 50;
             e.x = Math.floor(Math.random() * (myContainer.width - randomWidth));
             e.y = Math.floor(Math.random() * 500) * -1;
@@ -133,32 +140,46 @@
             e.y += e.speed;
             if (e.y > 500) {
                 makeBad(e)
-            }            
+            }
+            if (colDetection(basket.el, e.el)) {
+                scoreUpdate();
+                makeBad(e)
+                console.log('hit');
+            }
             e.el.style.top = e.y + 'px';
         }
 
+        function scoreUpdate() {
+            score++;
+            document.querySelector('.score').innerText = score;
+        }
+
         function playGame() {
-            if (keys.ArrowUp && basket.y < (myContainer.height - basket.height))
-                basket.y += speed;
-            if (keys.ArrowDown && basket.y > 0)
-                basket.y -= speed;
-            if (keys.ArrowRight && basket.x < (myContainer.width - basket.width))
-                basket.x += speed;
-            if (keys.ArrowLeft && basket.x > 0)
-                basket.x -= speed;
+            if (gameplay) {
+                if (keys.ArrowUp && basket.y < (myContainer.height - basket.height))
+                    basket.y += speed;
+                if (keys.ArrowDown && basket.y > 0)
+                    basket.y -= speed;
+                if (keys.ArrowRight && basket.x < (myContainer.width - basket.width))
+                    basket.x += speed;
+                if (keys.ArrowLeft && basket.x > 0)
+                    basket.x -= speed;
 
-            basket.el.style.left = basket.x + 'px';
-            basket.el.style.bottom = basket.y + 'px';
+                basket.el.style.left = basket.x + 'px';
+                basket.el.style.bottom = basket.y + 'px';
 
-            for (var i = 0; i < enemy.length; i++) {
-                bgMover(enemy[i])
+                for (var i = 0; i < enemy.length; i++) {
+                    bgMover(enemy[i])
+                }
+
+                // var second = document.querySelector('.baddy');
+                // var test = colDetection(basket.el, second)
+                // console.log(test);
+
+                requestAnimationFrame(playGame);
+            } else {
+                document.querySelector('.message').innerHTML = 'GAME OVER';
             }
-
-            // var second = document.querySelector('.baddy');
-            // var test = colDetection(basket.el, second)
-            // console.log(test);
-
-            requestAnimationFrame(playGame);
         }
 
         function colDetection(first, second) {
