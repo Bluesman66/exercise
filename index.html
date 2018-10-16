@@ -52,7 +52,6 @@
         <div id="basketContainer" class="basket">
             <div class="basket1"></div>
         </div>
-        <div class="baddy"></div>
     </div>
     <script>
         var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
@@ -107,12 +106,34 @@
                     y: 0,
                     el: div,
                     speed: 5
-                })                
+                })
+                makeBad(enemy[x]);
             }
         }
 
+        function makeBad(e) {
+            var randomWidth = Math.floor(Math.random() * 50) + 50;
+            e.x = Math.floor(Math.random() * (myContainer.width - randomWidth));
+            e.y = Math.floor(Math.random() * 500) * -1;
+            e.speed = Math.ceil(Math.random() * 10) + 2;
+            e.el.style.left = e.x + 'px';
+            e.el.style.width = randomWidth + 'px';
+            e.el.style.backgroundColor = randomColor();
+        }
+
+        function randomColor() {
+            function c() {
+                var hex = Math.floor(Math.random() * 256).toString(16);
+                return ('0' + String(hex)).substr(-2)
+            }
+            return '#' + c() + c() + c();
+        }
+
         function bgMover(e) {
-            e.y += e.speed;            
+            e.y += e.speed;
+            if (e.y > 500) {
+                makeBad(e)
+            }            
             e.el.style.top = e.y + 'px';
         }
 
