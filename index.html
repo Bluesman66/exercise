@@ -89,7 +89,32 @@
         var speed = 3;
         document.addEventListener('keydown', pressKeyOn);
         document.addEventListener('keyup', pressKeyOff);
+        var enemy = [];
+        setupBadGuys(3);
+
         requestAnimationFrame(playGame);
+
+        function setupBadGuys(num) {
+            for (var x = 0; x < num; x++) {
+                var temp = 'badGuy' + (x + 1);
+                var div = document.createElement('div');
+                div.innerHTML = temp;
+                div.setAttribute('class', 'baddy');
+                div.setAttribute('id', temp);
+                container.appendChild(div);
+                enemy.push({
+                    x: 0,
+                    y: 0,
+                    el: div,
+                    speed: 5
+                })                
+            }
+        }
+
+        function bgMover(e) {
+            e.y += e.speed;            
+            e.el.style.top = e.y + 'px';
+        }
 
         function playGame() {
             if (keys.ArrowUp && basket.y < (myContainer.height - basket.height))
@@ -104,9 +129,13 @@
             basket.el.style.left = basket.x + 'px';
             basket.el.style.bottom = basket.y + 'px';
 
-            var second = document.querySelector('.baddy');
-            var test = colDetection(basket.el, second)
-            console.log(test);
+            for (var i = 0; i < enemy.length; i++) {
+                bgMover(enemy[i])
+            }
+
+            // var second = document.querySelector('.baddy');
+            // var test = colDetection(basket.el, second)
+            // console.log(test);
 
             requestAnimationFrame(playGame);
         }
@@ -120,7 +149,7 @@
         }
 
         function pressKeyOn(event) {
-            event.preventDefault();            
+            event.preventDefault();
             keys[event.key] = true;
         }
 
