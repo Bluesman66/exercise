@@ -49,7 +49,7 @@
 <body>
     <div>Score: <span class="score">0</span></div>
     <div id="container">
-        <div id="basket" class="basket">
+        <div id="basketContainer" class="basket">
             <div class="basket1"></div>
         </div>
         <div class="baddy"></div>
@@ -59,6 +59,8 @@
             window.msRequestAnimationFrame;
         var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
         var start = window.mozAnimationStartTime; // Only supported in FF. Other browsers can use something like Date.now().
+        var container = document.getElementById('container');
+        var basketContainer = document.getElementById('basketContainer');
 
         var keys = {
             ArrowUp: false,
@@ -67,23 +69,53 @@
             ArrowRight: false
         }
 
+        var basket = {
+            x: 0,
+            y: 0,
+            el: basketContainer,
+            width: basketContainer.offsetWidth,
+            height: basketContainer.offsetHeight,
+            left: basketContainer.offsetLeft,
+            top: basketContainer.offsetTop
+        }
+
+        var myContainer = {
+            width: container.offsetWidth,
+            height: container.offsetHeight,
+            left: container.offsetLeft,
+            top: container.offsetTop
+        }
+
+        var speed = 3;
         document.addEventListener('keydown', pressKeyOn);
         document.addEventListener('keyup', pressKeyOff);
         requestAnimationFrame(playGame);
 
         function playGame() {
+            if (keys.ArrowUp && basket.y < (myContainer.height - basket.height))
+                basket.y += speed;
+            if (keys.ArrowDown && basket.y > 0)
+                basket.y -= speed;
+            if (keys.ArrowRight && basket.x < (myContainer.width - basket.width))
+                basket.x += speed;
+            if (keys.ArrowLeft && basket.x > 0)
+                basket.x -= speed;
+
+            basket.el.style.left = basket.x + 'px';
+            basket.el.style.bottom = basket.y + 'px';
+
             requestAnimationFrame(playGame);
         }
 
         function pressKeyOn(event) {
-            event.preventDefault();   
-            console.log(event);         
+            event.preventDefault();
+            console.log(event);
             keys[event.key] = true;
         }
 
         function pressKeyOff(event) {
             event.preventDefault();
-            keys[event.key] = true;            
+            keys[event.key] = false;
         }
     </script>
 </body>
