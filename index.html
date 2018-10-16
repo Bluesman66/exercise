@@ -61,10 +61,10 @@
         var start = window.mozAnimationStartTime; // Only supported in FF. Other browsers can use something like Date.now().
 
         var keys = {
-            up: false,
-            down: false,
-            left: false,
-            right: false
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false
         }
 
         document.addEventListener('keydown', pressKeyOn);
@@ -76,22 +76,14 @@
         }
 
         function pressKeyOn(event) {
-            event.preventDefault();
-            var k = event.keyCode;
-            console.log(event.keyCode);
-            if (k === 37) keys.left = true;
-            else if (k === 38) keys.up = true;
-            else if (k === 39) keys.right = true;
-            else if (k === 40) keys.down = true;
+            event.preventDefault();   
+            console.log(event);         
+            keys[event.key] = true;
         }
 
         function pressKeyOff(event) {
             event.preventDefault();
-            var k = event.keyCode;
-            if (k === 37) keys.left = false;
-            else if (k === 38) keys.up = false;
-            else if (k === 39) keys.right = false;
-            else if (k === 40) keys.down = false;
+            keys[event.key] = true;            
         }
     </script>
 </body>
