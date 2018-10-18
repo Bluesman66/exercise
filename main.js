@@ -2,8 +2,8 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
             window.msRequestAnimationFrame;
         var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
         var start = window.mozAnimationStartTime; // Only supported in FF. Other browsers can use something like Date.now().
-        var container = document.getElementById('container');
-        var basketContainer = document.getElementById('basket-сontainer');
+        var container = document.querySelector('.container');
+        var basketContainer = document.querySelector('.container__basket');
         var score;
         var totalBad;
         var gameplay = false;
@@ -33,7 +33,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
         }
 
         var speed = 3;
-        document.querySelector('.btn-start').addEventListener('click', startGame);
+        document.querySelector('.header__btn-start').addEventListener('click', startGame);
         document.addEventListener('keydown', pressKeyOn);
         document.addEventListener('keyup', pressKeyOff);
         var enemy = [];
@@ -114,7 +114,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
 
         function scoreUpdate() {
             score++;
-            document.querySelector('.score').innerText = score;
+            document.querySelector('.header__score').innerText = score;
         }
 
         function playGame() {
